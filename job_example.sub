@@ -1,0 +1,13 @@
+universe   = vanilla
+executable = condor_run.sh
+should_transfer_files = YES
+transfer_input_files = ssh_conf_new, .ssh
+log = log.job
+output = out.job
+error = err.job
+request_GPUs = 1
+
+# Ensure job runs on a specific machine
+requirements = (Machine == "NAME OF THE MACHINE")
+
+queue
