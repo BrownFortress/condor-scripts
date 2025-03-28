@@ -68,7 +68,7 @@ echo "I'm mounting ASSETS"
  
 sshfs -F $PWD/culomb  $REMOTE_USER@$REMOTE_HOST:$REMOTE_ASSETS_PATH $ASSETS
 
-pushd $LOCAL_MOUNT/$WORK_FOLDER
+pushd $LOCAL_MOUNT/$WORKING_FOLDER
 # Run the actual job
 echo "Running job..."
 # RUN PYTHON 
