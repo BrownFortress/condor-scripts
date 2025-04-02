@@ -21,6 +21,7 @@ REMOTE_ASSETS_PATH="" # Path to the folder that stores the weights (if any)
 LOCAL_MOUNT="$PWD/mnt" # Name folder to mount
 ASSETS="$PWD/assets" # Assets folder
 
+# Conda enviroment if any
 CONDA_ENV="" # Name of the conda environment to activate 
 WORKING_FOLDER="" # Folder containing your project
 PYTHON_SCRIPT="main.py" # Python script to run
