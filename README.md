@@ -48,4 +48,4 @@ Alright! Now, you can launch your condor job by running this:
 ```bash
 condor_submit job_example.sub
 ```
-An enjoy! 
+And enjoy! 
