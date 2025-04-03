@@ -6,16 +6,16 @@ In this repo, you can find some scripts for HT Condor to avoid the copying of fi
 
 First, you need to install HT Condor on your machines. Here is the official guide [LINK](https://htcondor.readthedocs.io/en/latest/getting-htcondor/install-linux-as-root.html#).
 
-Once you've done this, you to place the content of this folder in your home folder. (This is the simplest way, if you are familiar with bash you can easily customize the script. )
+Once you've done this, you need to place the content of this folder in your home folder. (This is the simplest way, if you are familiar with bash you can easily customize the script. )
 
-Before starting, we declare two variables just to make the guidelines clearer. We have a master node called `beatrix` and an execution node called virgil`. (Dante et al.)
+Before starting, we declare two variables just to make the guidelines clearer. We have a master node called `beatrix` and an execution node called `virgil`. (Dante et al.)
 
 Then, you can run `create_ssh_keys.sh` as 
 ```bash
 chmod u+x create_ssh_keys.sh
 ./create_ssh_keys.sh
 ```
-This script creates the SSH keys needed for mounting a target folder.
+This script creates the SSH keys needed to mount a target folder.
 
 After that, you can open the file `condor_run.sh` with your preferred editor. This script mounts your home folder in the condor work environment and executes the script you would like to execute. The parameters that you have to modify are the following.
 ```bash
@@ -29,8 +29,8 @@ REMOTE_ASSETS_PATH="" # Path to the folder that stores the weights (if any)
 Then, you have to specify the conda environment to activate and the script to run.
 ```bash
 CONDA_ENV="may4" # Name of the conda environment to activate
-WORKING_FOLDER="example" # Folder containing your project (that contains the main)
-PYTHON_SCRIPT="main.py" # Python script to run (main for instance)
+WORKING_FOLDER="example" # Folder containing your project (that contains the PYTHON_SCRIPT)
+PYTHON_SCRIPT="main.py" # Python script to run (main.py for instance)
 ...
 # If you have more than one GPU you can list them here. If you don't have any GPU you can comment out this part.
 export CUDA_VISIBLE_DEVICES=0 # You can add more devices if you have/need them.
@@ -43,6 +43,16 @@ request_GPUs = 1 # The number of gpus you need (if any)
 # Ensure job runs on a specific machine (our execution node)
 requirements = (Machine == "virgil")
 ```
+
+> [!IMPORTANT]  
+> By default, HTCondor does not have access to the GPUs. To run a job with a GPU, you will first have to modify the configuration in `/etc/condor/condor_config.local` by adding
+> ```
+> use feature : GPUs
+> GPU_DISCOVERY_EXTRA = -extra
+> MACHINE_RESOURCE_INVENTORY_GPUs = $(LIBEXEC)/condor_gpu_discovery -properties
+> ENVIRONMENT_FOR_AssignedGPUs = GPU_DEVICE_ORDINAL=/(CUDA|OCL)// CUDA_VISIBLE_DEVICES
+> ```
+> More details in the following [guide](https://htcondor-wiki.cs.wisc.edu/index.cgi/wiki?p=HowToManageGpus).
 
 Alright! Now, you can launch your condor job by running this:
 ```bash
